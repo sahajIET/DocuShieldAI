@@ -22,13 +22,13 @@ logger = logging.getLogger(__name__)
 # This model is used for advanced natural language processing tasks, specifically
 # for Named Entity Recognition (NER) and for semantic analysis in the validation step.
  # **[COPIED AS IS]** This was in your original redaction_core.py. It should ideally only be in main.py. Will address this later in main.py.
-# try:
-#     nlp = spacy.load("en_core_web_lg")
-#     logger.info("✅ spaCy model 'en_core_web_lg' loaded successfully.") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-# except Exception as e:
-#     logger.error(f"❌ Error loading spaCy model: {e}") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-#     logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-#     nlp = None
+try:
+    nlp = spacy.load("en_core_web_sm")
+    logger.info("✅ spaCy model 'en_core_web_lg' loaded successfully.") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+except Exception as e:
+    logger.error(f"❌ Error loading spaCy model: {e}") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+    logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+    nlp = None
 
 # ==============================================================================
 # 2. SENSITIVE ENTITY DETECTION
