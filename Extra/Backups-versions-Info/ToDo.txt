@@ -1,0 +1,17 @@
+Need to check same page image & text
+if time permits that will add the face/biometrics hiding too.
+
+And in terms of redaction extract_text-best4 / 4a is best
+
+4 - without logging (driving license + employeeID)
+4a - with logging
+
+4a old
+4a new 
+
+
+4b old - logging, no inbetween chars, group based, small regex, better (its regex is very Good)
+4b new - 
+
+use x1 overall beast (still flawed)
+x2 not able to correctly deliver (more advance than x1)

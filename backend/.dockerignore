@@ -1,0 +1,21 @@
+# Ignore Python specific files
+*.pyc
+*.pyo
+__pycache__
+.Python
+env/
+venv/
+*.env # Do not copy your local .env file into the image (for security)
+.pytest_cache/
+.mypy_cache/
+.vscode/
+.git/
+.gitignore
+
+# Ignore Node.js/frontend development artifacts
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+
+# Ignore logs
+*.log

@@ -1,0 +1,401 @@
+Regex - 1 (Most powerful,Good Results, Simpler, Semi Contextual, More attributes - 4a new) - 2290 
+    "EMAIL_ADDRESS": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+    "PHONE_NUMBER": r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}\b",
+    "POSTAL_ADDRESS": r"\b\d{1,5}\s(?:[A-Za-z]+\s){1,5}(?:Street|St|Road|Rd|Avenue|Ave|Lane|Ln|Boulevard|Blvd|Drive|Dr|Court|Ct|Place|Pl|Square|Sq|Terrace|Ter|Way|Wy|Circle|Cir)\b,?\s(?:[A-Z][a-z]+\s?){1,3},?\s[A-Z]{2}\s\d{5}(?:-\d{4})?\b",
+    "AADHAAR_ID": r"\b\d{4}[ -]?\d{4}[ -]?\d{4}\b",
+    "PAN_ID": r"\b[A-Z]{5}[0-9]{4}[A-Z]{1}\b",
+    "SSN_US": r"\b\d{3}[- ]?\d{2}[- ]?\d{4}\b",
+    "PASSPORT_NUMBER": r"\b(?:[A-Z]{1}\d{7}|[A-Z]{2}\d{7}|[A-Z]{2}\d{6}[A-Z]{1})\b",
+    "DRIVING_LICENSE_NUMBER": r"\b[A-Z0-9]{5,20}\b",
+    "VOTER_ID_NUMBER": r"\b[A-Z]{3}\d{7}\b",
+    "TAX_IDENTIFICATION_NUMBER": r"\b(?:EIN|TIN|ITIN|SSN)?:?\s?\d{2}[-.\s]?\d{7}\b|\b\d{9}\b|\b\d{3}-\d{2}-\d{4}\b",
+    "BANK_ACCOUNT_NUMBER": r"\b\d{9,18}\b",
+    "CREDIT_DEBIT_CARD": r"\b(?:4\d{12}(?:\d{3})?|5[1-5]\d{14}|6(?:011|5\d{2})\d{12}|3[47]\d{13}|3(?:0[0-5]|[68]\d)\d{11}|(?:2131|1800|35\d{3})\d{11})\b",
+    "IP_ADDRESS_V4": r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b",
+    "MAC_ADDRESS": r"\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b|\b(?:[0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2}\b",
+    "EMPLOYEE_ID": r"\bEID-\d{4,8}\b|\bEMP-\d{4,8}\b",
+    "CUSTOMER_ID": r"\bCID-\d{4,8}\b|\bCUST-\d{4,8}\b",
+    "VEHICLE_REG_NUMBER": r"\b[A-Z]{2}[0-9]{2}[A-Z]{2}\d{4}\b|\b[A-Z]{2}[0-9]{2}[A-Z]{1}\d{4}\b",
+    "DATE_SPECIFIC_DDMMYYYY": r"\b(?:0?[1-9]|[12][0-9]|3[01])[-/.](?:0?[1-9]|1[0-2])[-/.](?:19|20)\d{2}\b",
+    "DATE_SPECIFIC_MMDDYYYY": r"\b(?:0?[1-9]|1[0-2])[-/.](?:0?[1-9]|[12][0-9]|3[01])[-/.](?:19|20)\d{2}\b",
+    "CUSTOM_KEYWORD_PLL": (r"\bPLL\b", re.IGNORECASE),
+    # "BLOOD_GROUP": r"\b(?:A|B|AB|O)[+-]\b", # Removed the optional parentheses and spaces for stricter match
+    "BLOOD_GROUP": r"(?i)\b(?:Blood\s(?:Type|Group)|B\.G\.)[:\s-]+((?:A|B|AB|O)\s?[+-](?:ve|sitive|gative)?)",
+    "DISABILITY_STATUS": r"\b(?:disabled|handicapped|impairment|special\sneeds)\b", # Added \s for special needs
+    "SEXUAL_ORIENTATION": r"\b(?:heterosexual|homosexual|bisexual|asexual|pansexual)\b",
+    "POLITICAL_BELIEFS": r"\b(?:democrat|republican|liberal|conservative|socialist|communist)\b",
+    "RELIGIOUS_BELIEFS": r"\b(?:christian|muslim|hindu|buddhist|jewish|atheist)\b",
+    # "TRADE_UNION_MEMBERSHIP": r"\b(?:trade\sunion\smember|unionized|union\smember)\b", # Added \s for multi-word
+    "MARITAL_STATUS": r"\b(?:single|married|divorced|widowed)\b",
+    # "GENERIC_ID_TERM": r"\b(?:ID|No|Number|Ref|Reference|Code)\b",
+    #"GENERIC_ID_TERM": r"\b(?:ID|No|Number|Ref|Reference|Code)\b",
+    #"GENERIC_ID_TERM": (r"\b(?:ID|No|Number|Ref|Reference|Code)\b", re.IGNORECASE),
+    "HEALTH_KEYWORD": r"\b(?:medical|health|diagnosis|prescription|condition|illness|treatment|hospital|clinic)\b",
+    "DOB_DDMMMYYYY": r"\b(?:0[1-9]|[12][0-9]|3[01])-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(?:19|20)\d{2}\b",
+    "DOB_DDMMYYYY": r"\b(?:0[1-9]|[12][0-9]|3[01])/(?:0[1-9]|1[0-2])/(?:19|20)\d{2}\b",
+    "GENDER": r"\b(?:male|female|other|non-binary|transgender|trans)\b", # Removed 'm' and 'f' due to high false positive rate
+    "AGE": r"\b(?:age\s*|yrs?\s*|y\.o\s*)?(\d{1,2})\b", # Stricter AGE, removes the problematic [A-Za-z]{0,5}
+
+Regex - 2 ( Good Results, Comphrehensive, pattern are contextual, less attributes (4b - old) )  - 865
+
+        "EMAIL_ADDRESS": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+        "PHONE_NUMBER": r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3,5}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}\b",
+        # Address is very hard. This looks for "Address:" and captures the following multi-line text ending in a pincode.
+        "POSTAL_ADDRESS": r"(?i)\b(?:Address|Location|Addr\.)[:\s-]+((?:[A-Za-z0-9\s,.-]+(?:\n|\s)){1,4}\b\d{5,7})",
+
+        # --- National/Government IDs (High-Confidence) ---
+        "AADHAAR_ID": r"\b(\d{4}[ -]?\d{4}[ -]?\d{4})\b",  # Unique pattern, can be standalone
+        "PAN_ID": r"\b([A-Z]{5}[0-9]{4}[A-Z]{1})\b",       # Unique pattern, can be standalone
+        "SSN_US": r"(?i)\b(?:SSN|Social\sSecurity\sNo\.?)[:\s-]*(\d{3}[- ]?\d{2}[- ]?\d{4})\b",
+        "PASSPORT_NUMBER": r"(?i)\b(?:Passport\sNo\.?)[:\s-]*([A-Z0-9]{6,15})\b",
+        "DRIVING_LICENSE": r"(?i)\b(?:Driving\sLicense|DL\sNo\.?|License\sNumber)[\s:.-]*([A-Z0-9-]{8,20})\b",
+        "VOTER_ID_NUMBER_IN": r"(?i)\b(?:Voter\sID|EPIC\sNo\.?)[:\s-]*([A-Z]{3}\d{7})\b",
+
+        # --- Organizational & Financial IDs ---
+        "EMPLOYEE_ID": r"(?i)\b(?:Employee\sID|Emp\sID|EID|Employee\sNo\.?)[:\s-]*([A-Z0-9-]{4,12})\b",
+        "CUSTOMER_ID": r"(?i)\b(?:Customer\sID|Cust\sID|CID)[\s:.-]*([A-Z0-9-]{4,15})\b",
+        "USER_ID": r"(?i)\b(?:User\s?ID|Username|Login)[\s:.-]*([a-zA-Z0-9_.-]{4,20})\b",
+        "BANK_ACCOUNT_NUMBER": r"(?i)\b(?:Account\sNo|Acc\sNo|A/C)[\s:.-]*(\d{9,18})\b",
+        "CREDIT_DEBIT_CARD": r"\b((?:4\d{3}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:5[1-5]\d{2}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:3[47]\d{2}[ -]?\d{6}[ -]?\d{5}))\b",
+
+        # --- Health & Personal Data (Key-Value) ---
+        # This requires a label to avoid redacting common words.
+        "HEALTH_CONDITION": r"(?i)\b(?:Condition|Diagnosis|Illness)[\s:.-]+([A-Za-z\s,/.()-]+)(?=\n|\.|;)",
+        "BLOOD_GROUP": r"(?i)\b(?:Blood\s(?:Type|Group)|B\.G\.)[:\s-]+((?:A|B|AB|O)\s?[+-](?:ve|sitive|gative)?)",
+        
+        # --- Other Identifiers ---
+        "IP_ADDRESS": r"\b((?:[0-9]{1,3}\.){3}[0-9]{1,3})\b",
+        "VEHICLE_REG_NUMBER": r"(?i)\b(?:Reg\sNo\.?|Vehicle\sNo\.?)[:\s-]*([A-Z]{2}[-.\s]?[0-9]{1,2}[-.\s]?[A-Z]{1,2}[-.\s]?[0-9]{1,4})\b",
+        "FULL_NAME_WITH_TITLE": r"\b(?:Name\s*:\s*|Mr\.?|Ms\.?|Mrs\.?|Dr\.?)\s+([A-Z][a-z]+\s(?:[A-Z][a-z]*\s)?[A-Z][a-z]+)",
+
+Regex - 3 (Most powerful, comprehensive, may have false positives, more attributes, conceptual) - 897
+
+    # 1. EMAIL_ADDRESS: Already good, no contextual keyword strictly needed as format is unique
+    "EMAIL_ADDRESS": (r"\b([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,})\b", re.IGNORECASE),
+
+    # 2. PHONE_NUMBER: Improved flexibility for separators and group lengths, still highly generic
+    "PHONE_NUMBER": (r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3,5}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}\b", 0), # No real keyword, keep as-is or make specific
+
+    # 3. POSTAL_ADDRESS: Shift to contextual multi-line matching
+    "POSTAL_ADDRESS": (r"(?i)\b(?:Address|Location|Addr\.)[:\s-]+((?:[A-Za-z0-9\s,.-]+(?:\n|\s)){1,4}\b\d{5,7})\b", 0),
+    # Note: \b\d{5,7} for pincode, adjust if only 6 digits are expected for India. (e.g., \b\d{6}\b)
+
+    # --- National/Government IDs (High-Confidence) ---
+    # 4. AADHAAR_ID: Unique pattern, can be standalone, but often with context. Made capturing.
+    "AADHAAR_ID": (r"(?i)\b(?:Aadhaar\s(?:No|ID)|UIDAI)\s*[:\s-]*(\d{4}[ -]?\d{4}[ -]?\d{4})\b", 0),
+
+    # 5. PAN_ID: Unique pattern, can be standalone. Made capturing.
+    "PAN_ID": (r"(?i)\b(?:PAN\s?No\.?|Permanent\sAccount\sNumber)\s*[:\s-]*([A-Z]{5}[0-9]{4}[A-Z]{1})\b", 0),
+
+    # 6. SSN_US: Added US-specific context
+    "SSN_US": (r"(?i)\b(?:SSN|Social\sSecurity\sNo\.?)[:\s-]*(\d{3}[- ]?\d{2}[- ]?\d{4})\b", 0),
+
+    # 7. PASSPORT_NUMBER: Added context and made alphanumeric more generic
+    "PASSPORT_NUMBER": (r"(?i)\b(?:Passport\sNo\.?|Passport\sNumber)[:\s-]*([A-Z0-9]{6,15})\b", 0),
+
+    # 8. DRIVING_LICENSE_NUMBER: Added context (Indian DL can be complex, this is a common starting point)
+    "DRIVING_LICENSE_NUMBER": (r"(?i)\b(?:Driving\sLicense|DL\sNo\.?|License\sNumber)[\s:.-]*([A-Z0-9-]{8,20})\b", 0),
+    # Note: Adjusted pattern to be more common for Indian DL, e.g., RJ14 201200XXXXX or MH12201500XXXXX
+    # For stricter Indian DL: r"(?i)\b(?:Driving\sLicense|DL\sNo\.?|License\sNumber)[\s:.-]*([A-Z]{2}\d{2}\s?\d{11,13})\b" is more specific.
+
+    # 9. VOTER_ID_NUMBER: Added context (Indian Voter ID/EPIC)
+    "VOTER_ID_NUMBER": (r"(?i)\b(?:Voter\sID|EPIC\sNo\.?)[:\s-]*([A-Z]{3}\d{7})\b", 0),
+
+    # 10. TAX_IDENTIFICATION_NUMBER: More contextual, combining common terms
+    "TAX_IDENTIFICATION_NUMBER": (r"(?i)\b(?:Tax\sID|TIN|ITIN|GSTIN|EIN)\s*[:\s-]*([A-Z0-9]{2,}[-.\s]?\d{7,15})\b", 0),
+    # Note: This is still broad. GSTIN (15 chars) is common in India. PAN is already covered.
+
+    # 11. BANK_ACCOUNT_NUMBER: Requires context to avoid false positives
+    "BANK_ACCOUNT_NUMBER": (r"(?i)\b(?:Bank\sAccount\sNo|Acc\sNo|Account\sNumber|A/C\sNo|IFSC)[:\s-]*([A-Z0-9]{6,20})\b", 0),
+    # Note: IFSC is added as a common associated ID. Actual bank account numbers alone are too ambiguous.
+
+    # 12. CREDIT_DEBIT_CARD: Better spacing and structure for common card numbers
+    "CREDIT_DEBIT_CARD": (r"\b(?:Card\s?Number|Credit\s?Card|Debit\s?Card)[:\s-]*((?:4\d{3}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:5[1-5]\d{2}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:3[47]\d{2}[ -]?\d{6}[ -]?\d{5}))\b", 0),
+    # Changed to require a prefix or label
+
+    # 13. IP_ADDRESS_V4: Renamed to IP_ADDRESS for broader scope, still focuses on IPv4
+    "IP_ADDRESS": (r"\b(?:IP\s?Address|IP)[:\s-]*((?:[0-9]{1,3}\.){3}[0-9]{1,3})\b", 0),
+    # Made it capture the IP address itself
+
+    # 14. MAC_ADDRESS: Added context
+    "MAC_ADDRESS": (r"(?i)\b(?:MAC\s?Address|Physical\sAddress|HWaddr)[:\s-]*((?:[0-9a-f]{2}:){5}[0-9a-f]{2}|(?:[0-9a-f]{2}-){5}[0-9a-f]{2})\b", 0),
+
+    # 15. EMPLOYEE_ID: More robust prefixes and general ID format
+    "EMPLOYEE_ID": (r"(?i)\b(?:Employee\sID|Emp\sID|EID|Employee\sNo\.?)[:\s-]*([A-Z0-9-]{4,12})\b", 0),
+
+    # 16. CUSTOMER_ID: More robust prefixes and general ID format
+    "CUSTOMER_ID": (r"(?i)\b(?:Customer\sID|Cust\sID|CID|Customer\sNo\.?)[:\s-]*([A-Z0-9-]{4,15})\b", 0),
+
+    # 17. VEHICLE_REG_NUMBER: Added common Indian context and more flexible pattern
+    "VEHICLE_REG_NUMBER": (r"(?i)\b(?:Vehicle\sReg\sNo\.?|Vehicle\sNumber|Reg\sNo\.?|License\sPlate)[:\s-]*([A-Z]{2}[-.\s]?[0-9]{1,2}[-.\s]?[A-Z]{1,2}[-.\s]?[0-9]{1,4})\b", 0),
+    # Example Indian: MH 12 AB 1234, DL-01-C-0001
+
+    # --- Dates (Specific formats, often appear without explicit labels, but can be added) ---
+    # 18. DATE_SPECIFIC_DDMMYYYY: Keeping standalone for specific date formats
+    "DATE_SPECIFIC_DDMMYYYY": (r"\b(?:0?[1-9]|[12][0-9]|3[01])[-/.](?:0?[1-9]|1[0-2])[-/.](?:19|20)\d{2}\b", 0),
+
+    # 19. DATE_SPECIFIC_MMDDYYYY: Keeping standalone for specific date formats
+    "DATE_SPECIFIC_MMDDYYYY": (r"\b(?:0?[1-9]|1[0-2])[-/.](?:0?[1-9]|[12][0-9]|3[01])[-/.](?:19|20)\d{2}\b", 0),
+
+    # 20. CUSTOM_KEYWORD_PLL: Already in Regex 2 style
+    "CUSTOM_KEYWORD_PLL": (r"\bPLL\b", re.IGNORECASE),
+
+    # 21. BLOOD_GROUP: Already in Regex 2 style
+    "BLOOD_GROUP": (r"(?i)\b(?:Blood\s(?:Type|Group)|B\.G\.)[:\s-]+((?:A|B|AB|O)\s?[+-](?:ve|sitive|gative)?)", 0),
+
+    # --- Generic Attributes (Contextual Keywords usually required for accuracy) ---
+    # 22. DISABILITY_STATUS: Added contextual keywords
+    "DISABILITY_STATUS": (r"(?i)\b(?:Disability\sStatus|Has\sDisability|Disabled|Handicapped|Impairment|Special\sNeeds)[:\s-]*\b(?:yes|no|disabled|handicapped|impairment|special\sneeds|wheelchair\suser)\b", 0),
+
+    # 23. SEXUAL_ORIENTATION: Added contextual keywords
+    "SEXUAL_ORIENTATION": (r"(?i)\b(?:Sexual\sOrientation)[:\s-]*\b(?:heterosexual|homosexual|bisexual|asexual|pansexual|gay|lesbian)\b", 0),
+
+    # 24. POLITICAL_BELIEFS: Added contextual keywords and broader terms
+    "POLITICAL_BELIEFS": (r"(?i)\b(?:Political\sBeliefs|Party|Affiliation)[:\s-]*\b(?:democrat|republican|liberal|conservative|socialist|communist|bjp|congress|aap|nda|upa)\b", 0),
+    # Added common Indian political parties/alliances
+
+    # 25. RELIGIOUS_BELIEFS: Added contextual keywords
+    "RELIGIOUS_BELIEFS": (r"(?i)\b(?:Religious\sBeliefs|Religion)[:\s-]*\b(?:christian|muslim|hindu|buddhist|jewish|sikh|jain|atheist|none)\b", 0),
+    # Added common Indian religions
+
+    # 26. MARITAL_STATUS: Added contextual keywords
+    "MARITAL_STATUS": (r"(?i)\b(?:Marital\sStatus)[:\s-]*\b(?:single|married|divorced|widowed|separated|civil\spartnership)\b", 0),
+
+    # 27. GENERIC_ID_TERM: Made case-insensitive as requested earlier
+    # This one *still* has a risk of false positives for "No" or "Code" if not carefully controlled.
+    "GENERIC_ID_TERM": (r"\b(?:ID|No|Number|Ref|Reference|Code)\b", re.IGNORECASE),
+
+    # 28. HEALTH_KEYWORD: Added contextual keywords for more precision
+    "HEALTH_KEYWORD": (r"(?i)\b(?:Medical\sCondition|Health\sStatus|Diagnosis|Prescription|Treatment|Hospital|Clinic)[:\s-]*\b(?:medical|health|diagnosis|prescription|condition|illness|treatment|hospital|clinic|patient|doctor)\b", 0),
+    # Broadened to capture value after a label, or the keyword itself.
+
+    # 29. DOB_DDMMMYYYY: Added context
+    "DOB_DDMMMYYYY": (r"(?i)\b(?:DOB|Date\sof\sBirth)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(?:19|20)\d{2})\b", 0),
+
+    # 30. DOB_DDMMYYYY: Added context
+    "DOB_DDMMYYYY": (r"(?i)\b(?:DOB|Date\sof\sBirth)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])/(?:0[1-9]|1[0-2])/(?:19|20)\d{2})\b", 0),
+
+    # 31. GENDER: Added contextual keywords
+    "GENDER": (r"(?i)\b(?:Gender|Sex)[:\s-]*\b(?:male|female|other|non-binary|transgender|trans|m|f)\b", 0),
+    # Re-added 'm' and 'f' but only when explicitly preceded by "Gender:" or "Sex:".
+    # This reduces false positives while allowing common abbreviations.
+
+    # 32. AGE: Added contextual keywords, and made it capture the age number
+    "AGE": (r"(?i)\b(?:Age|Yrs\sOld|Y\.O\.)[:\s-]*(\d{1,2})\b", 0),
+    # This looks for "Age:", "Yrs Old:", "Y.O.:" followed by a 1 or 2 digit number.
+    # It will NOT match "55 years old" if "55" is the only thing matched.
+    # If you want "55 years old" to be matched: r"(?i)\b(\d{1,2})\s*yrs?\s*old\b|\b(?:Age|Yrs\sOld|Y\.O\.)[:\s-]*(\d{1,2})\b"
+    # The current one focuses on contextual matching.   
+
+
+Regex 4 (Almost same as regex 3) - gemini 2.5 Flash  - 897
+
+import re
+
+REGEX_PATTERNS = {
+    # --- Identifiers (High Confidence due to common prefixes) ---
+
+    # Email addresses are typically already self-identifying by their format,
+    # so a strong prefix is less common/necessary here.
+    "EMAIL_ADDRESS": r"(?i)\b(?:email|e-mail|e\.mail)?[:\s-]*([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z]{2,})\b",
+
+    # Phone numbers are tricky, adding common prefixes helps.
+    "PHONE_NUMBER": r"(?i)\b(?:Phone|Tel|Contact|Mobile|Ph\.?|Mob\.?|C\.)[:\s-]*(\+?\d{1,3}[-.\s]?)?\(?\d{3,5}\)?[-.\s]?\d{3,4}[-.\s]?\d{4})\b",
+
+    # Addresses are best handled contextually due to their variability.
+    # This now looks for "Address:" or similar, followed by address lines and a postcode.
+    "POSTAL_ADDRESS": r"(?i)\b(?:Address|Location|Addr\.)[:\s-]+((?:[A-Za-z0-9\s,.-]+(?:\n|\s)){1,4}\b\d{5,7})\b", # Increased pincode flexibility
+
+    # --- National/Government IDs (Contextual for better accuracy) ---
+
+    # Aadhaar is highly specific, but adding a label is safer for PII.
+    "AADHAAR_ID": r"(?i)\b(?:Aadhaar|UID|Aadhar\sNo\.?)[:\s-]*(\d{4}[ -]?\d{4}[ -]?\d{4})\b",
+
+    # PAN is also specific, but contextualization helps.
+    "PAN_ID": r"(?i)\b(?:PAN|Permanent\sAccount\sNumber)\s?(?:No\.?)?[:\s-]*([A-Z]{5}[0-9]{4}[A-Z]{1})\b",
+
+    # SSN (US) definitely benefits from contextualization.
+    "SSN_US": r"(?i)\b(?:SSN|Social\sSecurity\sNo\.?)[:\s-]*(\d{3}[- ]?\d{2}[- ]?\d{4})\b",
+
+    # Passport Number
+    "PASSPORT_NUMBER": r"(?i)\b(?:Passport\s(?:No\.?|Number))[:\s-]*([A-Z]{1,2}\d{6,7}[A-Z]?)\b", # Adjusted to allow 6-7 digits and optional trailing letter
+
+    # Driving License Number - Made more specific to Indian context as regex1 provided.
+    "DRIVING_LICENSE_NUMBER": r"(?i)\b(?:Driving\sLicense|DL\sNo\.?|License\sNumber)[\s:.-]*(([A-Z]{2}[-.\s]?[0-9]{2}[-.\s]?(?:19|20)\d{2}[-.\s]?[0-9]{7})|([A-Z]{2}\d{13,14}))\b", # Covers common Indian formats and some generic. Note the use of OR for multiple formats.
+
+    # Voter ID Number (Indian context, typically EPIC)
+    "VOTER_ID_NUMBER": r"(?i)\b(?:Voter\sID|EPIC\sNo\.?)[:\s-]*([A-Z]{3}\d{7})\b",
+
+    # Tax Identification Number - Made more robust.
+    "TAX_IDENTIFICATION_NUMBER": r"(?i)\b(?:(?:EIN|TIN|ITIN|GSTIN|TAX\sID|Tax\sIdentification\sNumber)\s?[:\s-]*(\d{2}[-.\s]?\d{7}|\d{9}|\d{3}[-.\s]?\d{2}[-.\s]?\d{4}|[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}))\b", # Combines TIN/EIN and also includes Indian GSTIN format.
+
+    # --- Financial IDs ---
+
+    # Bank Account Number - Crucially needs context.
+    "BANK_ACCOUNT_NUMBER": r"(?i)\b(?:Bank\s(?:Account\sNo|Acc\sNo|A/C)|Account\sNumber)[:\s-]*(\d{9,18})\b",
+
+    # Credit/Debit Card - Remains mostly format-based but slightly improved.
+    "CREDIT_DEBIT_CARD": r"\b((?:4\d{3}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:5[1-5]\d{2}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:3[47]\d{2}[ -]?\d{6}[ -]?\d{5})|(?:6(?:011|5\d{2})\d{12}))\b", # Added spaces/hyphens flexibility
+
+    # --- Network/Technical Identifiers ---
+    # IP and MAC addresses are usually self-identifying by format, but context can be added if needed.
+    "IP_ADDRESS_V4": r"(?i)\b(?:IP\sAddress|IPv4)[:\s-]*((?:[0-9]{1,3}\.){3}[0-9]{1,3})\b",
+    "MAC_ADDRESS": r"(?i)\b(?:MAC\sAddress|Physical\sAddress)[:\s-]*((?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|(?:[0-9a-fA-F]{2}-){5}[0-9a-fA-F]{2})\b",
+
+    # --- Organizational IDs ---
+    "EMPLOYEE_ID": r"(?i)\b(?:Employee\sID|Emp\sID|EID|Employee\sNo\.?)[:\s-]*([A-Z0-9-]{4,12})\b",
+    "CUSTOMER_ID": r"(?i)\b(?:Customer\sID|Cust\sID|CID|Customer\sNo\.?)[:\s-]*([A-Z0-9-]{4,15})\b",
+    "VEHICLE_REG_NUMBER": r"(?i)\b(?:Vehicle\sReg\sNo|Vehicle\sNumber|Reg\.?\sNo\.?)[:\s-]*(([A-Z]{2}[-.\s]?[0-9]{1,2}[-.\s]?[A-Z]{1,2}[-.\s]?[0-9]{4})|([A-Z]{2}\s\d{2}\s[A-Z]{1,2}\s\d{4}))\b", # More generic for India, allowing spaces/hyphens and 1 or 2 letters in middle section
+
+    # --- Date of Birth (DOB) ---
+    # Dates are tricky without context, but these common labels help.
+    "DOB_DDMMMYYYY": r"(?i)\b(?:DOB|Date\sof\sBirth)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-(?:19|20)\d{2})\b",
+    "DOB_DDMMYYYY": r"(?i)\b(?:DOB|Date\sof\sBirth)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])/(?:0[1-9]|1[0-2])/(?:19|20)\d{2})\b",
+
+    # Generic Dates (less confident, can lead to false positives if used for redaction without further checks)
+    "DATE_SPECIFIC_DDMMYYYY": r"\b((?:0?[1-9]|[12][0-9]|3[01])[-/.](?:0?[1-9]|1[0-2])[-/.](?:19|20)\d{2})\b",
+    "DATE_SPECIFIC_MMDDYYYY": r"\b((?:0?[1-9]|1[0-2])[-/.](?:0?[1-9]|[12][0-9]|3[01])[-/.](?:19|20)\d{2})\b",
+
+    # --- Demographic/Sensitive Attributes (High False Positive Risk if not contextualized) ---
+    # These categories are particularly prone to false positives if not tied to a label.
+    # The original "Regex 1" definitions for these were too broad for direct redaction.
+
+    "CUSTOM_KEYWORD_PLL": (r"(?i)\bPLL\b", re.IGNORECASE), # Already had IGNORECASE, just making explicit with (?i) for consistency.
+
+    "BLOOD_GROUP": r"(?i)\b(?:Blood\s(?:Type|Group)|B\.G\.)[:\s-]+((?:A|B|AB|O)\s?[+-](?:ve|sitive|gative)?)\b",
+
+    "DISABILITY_STATUS": r"(?i)\b(?:Disability\sStatus|Impairment|Special\sNeeds)[:\s-]*((?:disabled|handicapped|impairment|special\sneeds|differently\sabled))\b", # Added labels and capturing group.
+
+    "SEXUAL_ORIENTATION": r"(?i)\b(?:Sexual\sOrientation)[:\s-]*((?:heterosexual|homosexual|bisexual|asexual|pansexual|queer|gay|lesbian))\b", # Added labels and common terms.
+
+    "POLITICAL_BELIEFS": r"(?i)\b(?:Political\sBeliefs|Political\sAffiliation)[:\s-]*((?:democrat|republican|liberal|conservative|socialist|communist|independent|green\sparty|libertarian))\b", # Added labels and capturing group, more terms.
+
+    "RELIGIOUS_BELIEFS": r"(?i)\b(?:Religious\sBeliefs|Religion|Faith)[:\s-]*((?:christian|muslim|hindu|buddhist|jewish|atheist|sikh|jain|agnostic|spiritual))\b", # Added labels and capturing group, more terms.
+
+    "MARITAL_STATUS": r"(?i)\b(?:Marital\sStatus|Marital)[:\s-]*((?:single|married|divorced|widowed|separated|civil\sunion))\b", # Added labels and capturing group, more terms.
+
+    # "GENERIC_ID_TERM": This is a special case. For redaction, it's very dangerous to apply `GENERIC_ID_TERM`
+    # without a specific context, as "ID" or "Number" appear everywhere.
+    # It's best used as a keyword *in conjunction* with other patterns or more advanced NLP to infer intent.
+    # If forced to apply, it should be highly contextual.
+    # Example:
+    # "GENERIC_ID_TERM": r"(?i)\b(?:ID|Number|Reference|Ref|Code)\s*[:\s-]*([A-Z0-9]{4,20})\b", # This would look for e.g. "ID: XYZ123"
+    # However, this can still be very risky. I'll omit it as a direct redaction target based on the principle of Regex 2.
+
+    "HEALTH_KEYWORD": r"(?i)\b(?:Health\sInfo|Medical\sData|Diagnosis|Prescription|Condition|Illness|Treatment|Hospital|Clinic)[:\s-]*([A-Za-z\s,/.()-]+)(?=\n|\.|;)\b", # Added labels and capturing group, similar to HEALTH_CONDITION in Regex 2.
+
+    "GENDER": r"(?i)\b(?:Gender)[:\s-]*((?:male|female|other|non-binary|transgender|trans|m|f))\b", # Added labels and kept 'm' and 'f' under context.
+
+    "AGE": r"(?i)\b(?:Age|Years\sOld|Yrs\sOld|Y\.O\.?)\s*[:\s-]*(\d{1,3})\b", # Stricter AGE, requiring a label or clearer context
+}
+
+
+
+Regex - 5 Claude.ai -862
+
+PII_PATTERNS = {
+    # === HIGH CONFIDENCE PATTERNS (Low False Positive Risk) ===
+    
+    # Email addresses - format is self-identifying
+    "EMAIL_ADDRESS": r"(?i)\b(?:email|e-mail|e\.mail)?[:\s-]*([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z]{2,})\b",
+
+    # Phone numbers - require contextual labels to reduce false positives
+    "PHONE_NUMBER": r"(?i)\b(?:Phone|Tel|Contact|Mobile|Ph\.?|Mob\.?|Call|Cell)[:\s-]*(\+?\d{1,3}[-.\s]?)?\(?\d{3,5}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}\b",
+
+    # === GOVERNMENT/NATIONAL IDs (High Confidence) ===
+    
+    # Aadhaar - highly specific format with context
+    "AADHAAR_ID": r"(?i)\b(?:Aadhaar|UID|Aadhar\s(?:No|ID|Number)\.?)[:\s-]*(\d{4}[ -]?\d{4}[ -]?\d{4})\b",
+
+    # PAN - unique format with context
+    "PAN_ID": r"(?i)\b(?:PAN|Permanent\sAccount\sNumber)\s?(?:No\.?)?[:\s-]*([A-Z]{5}[0-9]{4}[A-Z]{1})\b",
+
+    # SSN - US specific with required context
+    "SSN_US": r"(?i)\b(?:SSN|Social\sSecurity\s(?:No|Number)\.?)[:\s-]*(\d{3}[- ]?\d{2}[- ]?\d{4})\b",
+
+    # Passport - requires label context
+    "PASSPORT_NUMBER": r"(?i)\b(?:Passport\s(?:No\.?|Number))[:\s-]*([A-Z]{1,2}\d{6,8}[A-Z]?)\b",
+
+    # Driving License - Indian format with context
+    "DRIVING_LICENSE_NUMBER": r"(?i)\b(?:Driving\sLicense|DL\s(?:No\.?|Number)|License\sNumber)[\s:.-]*(([A-Z]{2}[-.\s]?[0-9]{2}[-.\s]?(?:19|20)\d{2}[-.\s]?[0-9]{7})|([A-Z]{2}\d{13,14}))\b",
+
+    # Voter ID - Indian EPIC format
+    "VOTER_ID_NUMBER": r"(?i)\b(?:Voter\sID|EPIC\s(?:No\.?|Number))[:\s-]*([A-Z]{3}\d{7})\b",
+
+    # === FINANCIAL DATA ===
+    
+    # Bank Account - requires strong context
+    "BANK_ACCOUNT_NUMBER": r"(?i)\b(?:Bank\s(?:Account\s(?:No|Number)|Acc\s(?:No|Number)|A/C)|Account\sNumber)[:\s-]*(\d{9,18})\b",
+
+    # Credit/Debit Cards - format-based but enhanced
+    "CREDIT_DEBIT_CARD": r"(?i)(?:Card\s(?:No|Number)|Credit\sCard|Debit\sCard)[:\s-]*((?:4\d{3}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:5[1-5]\d{2}[ -]?\d{4}[ -]?\d{4}[ -]?\d{4})|(?:3[47]\d{2}[ -]?\d{6}[ -]?\d{5})|(?:6(?:011|5\d{2})[ -]?\d{4}[ -]?\d{4}[ -]?\d{4}))\b",
+
+    # === ADDRESSES ===
+    
+    # Postal Address - contextual multi-line matching
+    "POSTAL_ADDRESS": r"(?i)\b(?:Address|Location|Addr\.)[:\s-]+((?:[A-Za-z0-9\s,.-]+(?:\n|\s)){2,5}\b\d{5,7})\b",
+
+    # === DATES ===
+    
+    # Date of Birth - requires explicit DOB context
+    "DOB_DDMMMYYYY": r"(?i)\b(?:DOB|Date\sof\sBirth|Birth\sDate)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])[-/.](?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[-/.](?:19|20)\d{2})\b",
+    "DOB_DDMMYYYY": r"(?i)\b(?:DOB|Date\sof\sBirth|Birth\sDate)[:\s-]*((?:0[1-9]|[12][0-9]|3[01])[/-](?:0[1-9]|1[0-2])[/-](?:19|20)\d{2})\b",
+
+    # === ORGANIZATIONAL IDs ===
+    
+    # Employee ID - requires context
+    "EMPLOYEE_ID": r"(?i)\b(?:Employee\s(?:ID|No|Number)|Emp\s(?:ID|No)|Staff\s(?:ID|No))[:\s-]*([A-Z0-9-]{4,15})\b",
+
+    # Customer ID - requires context
+    "CUSTOMER_ID": r"(?i)\b(?:Customer\s(?:ID|No|Number)|Cust\s(?:ID|No)|Client\s(?:ID|No))[:\s-]*([A-Z0-9-]{4,15})\b",
+
+    # === GDPR ARTICLE 9 SPECIAL CATEGORIES (Sensitive Data) ===
+    
+    # Health Information - requires health-related context
+    "HEALTH_INFORMATION": r"(?i)\b(?:Medical\s(?:Condition|History|Record)|Health\s(?:Status|Info|Data)|Diagnosis|Prescription|Treatment|Patient\s(?:ID|Record))[:\s-]*([A-Za-z0-9\s,/.()-]{3,50})(?=\n|\.|;|$)\b",
+
+    # Blood Group - specific format
+    "BLOOD_GROUP": r"(?i)\b(?:Blood\s(?:Type|Group)|B\.?G\.?)[:\s-]+((?:A|B|AB|O)\s?[+-](?:ve|ive)?)\b",
+
+    # Religious Beliefs - requires explicit context
+    "RELIGIOUS_BELIEFS": r"(?i)\b(?:Religion|Religious\s(?:Belief|Affiliation)|Faith)[:\s-]*\b(Christian|Muslim|Hindu|Buddhist|Jewish|Sikh|Jain|Atheist|Catholic|Protestant|Sunni|Shia|Orthodox)\b",
+
+    # Political Beliefs - requires explicit context
+    "POLITICAL_BELIEFS": r"(?i)\b(?:Political\s(?:Belief|Affiliation|Party)|Party\s(?:Member|Affiliation))[:\s-]*\b(Democrat|Republican|Liberal|Conservative|BJP|Congress|AAP|Communist|Socialist)\b",
+
+    # Marital Status - requires context
+    "MARITAL_STATUS": r"(?i)\b(?:Marital\sStatus|Relationship\sStatus)[:\s-]*\b(Single|Married|Divorced|Widowed|Separated|Civil\s(?:Union|Partnership))\b",
+
+    # Sexual Orientation - requires explicit context
+    "SEXUAL_ORIENTATION": r"(?i)\b(?:Sexual\sOrientation)[:\s-]*\b(Heterosexual|Homosexual|Bisexual|Asexual|Pansexual|Gay|Lesbian|Straight)\b",
+
+    # Disability Status - requires context
+    "DISABILITY_STATUS": r"(?i)\b(?:Disability\s(?:Status|Info)|Physical\s(?:Disability|Impairment)|Special\sNeeds)[:\s-]*\b(Disabled|Handicapped|Impaired|Wheelchair|Blind|Deaf|Autism|ADHD|None)\b",
+
+    # === DEMOGRAPHIC DATA ===
+    
+    # Gender - requires explicit context
+    "GENDER": r"(?i)\b(?:Gender|Sex)[:\s-]*\b(Male|Female|Other|Non-Binary|Transgender|Trans|M|F)\b",
+
+    # Age - requires explicit context
+    "AGE": r"(?i)\b(?:Age|Years\sOld|Yrs\sOld|Y\.O\.?)\s*[:\s-]*(\d{1,3})\b",
+
+    # === TECHNICAL IDENTIFIERS ===
+    
+    # IP Address - requires context to avoid false positives
+    "IP_ADDRESS": r"(?i)\b(?:IP\s(?:Address|Addr)|IPv4)[:\s-]*((?:[0-9]{1,3}\.){3}[0-9]{1,3})\b",
+
+    # MAC Address - requires context
+    "MAC_ADDRESS": r"(?i)\b(?:MAC\s(?:Address|Addr)|Physical\sAddress|Hardware\sAddress)[:\s-]*((?:[0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2})\b",
+
+    # === VEHICLE INFORMATION ===
+    
+    # Vehicle Registration - Indian format with context
+    "VEHICLE_REG_NUMBER": r"(?i)\b(?:Vehicle\s(?:Reg\s(?:No|Number)|Number)|Registration\s(?:No|Number)|License\sPlate)[:\s-]*(([A-Z]{2}[-.\s]?[0-9]{1,2}[-.\s]?[A-Z]{1,2}[-.\s]?[0-9]{1,4})|([A-Z]{2}\s\d{2}\s[A-Z]{1,2}\s\d{4}))\b",
+
+    # === CUSTOM KEYWORDS ===
+    
+    # Custom PII keyword (adjust as needed)
+    "CUSTOM_PII_KEYWORD": r"(?i)\b(PII|Personal\sData|Sensitive\sInfo|Confidential)\b",
+}
+

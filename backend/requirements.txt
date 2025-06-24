@@ -1,0 +1,28 @@
+# Web framework - keeping your versions
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-dotenv==1.0.0
+
+# Document processing
+PyMuPDF==1.23.25
+
+# Image processing - fixed opencv for slim containers
+opencv-python-headless==4.9.0.80
+
+# Data processing
+numpy==1.26.4
+pandas==2.2.2
+
+# OCR
+pytesseract==0.3.10
+Pillow==10.3.0
+
+# Privacy/PII detection
+presidio-analyzer==2.2.35
+
+# NLP - install separately due to model download
+spacy==3.7.4
+
+# Additional dependencies that might be needed
+python-multipart==0.0.6
+aiofiles==23.2.1

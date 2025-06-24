@@ -1,0 +1,63 @@
+#   def extract_text_from_pdf_with_ocr(pdf_path):
+#     all_pages_data = []
+#     try:
+#         document = fitz.open(pdf_path)
+#         for page_num in range(document.page_count):
+#             try:
+#                 page = document.load_page(page_num)
+#                 page_data = {'page_num': page_num, 'text': '', 'is_ocr_page': False, 'ocr_word_details': []}
+#                 text_from_page = page.get_text("text")
+
+#                 has_significant_images = len(page.get_images()) > 0
+#                 is_text_sparse = len(text_from_page.strip()) < 100
+
+#                 if has_significant_images and is_text_sparse:
+#                     logging.info(f"Page {page_num + 1}: Image-based page detected. Attempting OCR...")
+#                     page_data['is_ocr_page'] = True
+                    
+#                     # (The auto-tuning logic is the same)
+#                     temp_pix = page.get_pixmap(matrix=fitz.Matrix(300 / 72, 300 / 72))
+#                     temp_img = Image.open(io.BytesIO(temp_pix.tobytes("png")))
+#                     open_cv_image_gray = cv2.cvtColor(np.array(temp_img), cv2.COLOR_RGB2GRAY)
+#                     profile = analyze_image_and_select_profile(open_cv_image_gray)
+#                     pix = page.get_pixmap(matrix=fitz.Matrix(profile['dpi'] / 72, profile['dpi'] / 72))
+#                     img = Image.open(io.BytesIO(pix.tobytes("png")))
+#                     final_gray_image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2GRAY)
+#                     if profile['denoise']:
+#                         final_gray_image = cv2.fastNlMeansDenoising(final_gray_image, None, h=10)
+#                     processed_image = cv2.adaptiveThreshold(final_gray_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, profile['thresh_block_size'], profile['thresh_c'])
+#                     ocr_data = pytesseract.image_to_data(processed_image, output_type=pytesseract.Output.DATAFRAME, config=f"--psm {profile['psm']}")
+
+#                     # (The text reconstruction logic is the same)
+#                     ocr_data = ocr_data.dropna(subset=['text'])
+#                     # Ensure 'text' column is string type before stripping
+#                     ocr_data['text'] = ocr_data['text'].astype(str) # Added/Confirmed
+#                     ocr_data = ocr_data[ocr_data['text'].str.strip() != '']
+#                     page_ocr_text = ""
+#                     page_ocr_word_details = []
+#                     current_char_offset = 0
+#                     for _, row in ocr_data.iterrows():
+#                         word = str(row['text'])
+#                         x0, y0, w, h = row['left'], row['top'], row['width'], row['height']
+#                         scale_x, scale_y = page.rect.width / pix.width, page.rect.height / pix.height
+#                         word_rect = fitz.Rect(x0*scale_x, y0*scale_y, (x0+w)*scale_x, (y0+h)*scale_y)
+#                         page_ocr_word_details.append({'text': word, 'bbox': word_rect, 'start_char_in_ocr_text': current_char_offset, 'end_char_in_ocr_text': current_char_offset + len(word)})
+#                         page_ocr_text += word + " "
+#                         current_char_offset += len(word) + 1
+#                     page_data['text'] = page_ocr_text.strip()
+#                     page_data['ocr_word_details'] = page_ocr_word_details
+#                 else:
+#                     logging.info(f"Page {page_num + 1}: Native text page detected.")
+#                     page_data['text'] = text_from_page
+                
+#                 all_pages_data.append(page_data)
+
+#             except Exception as e:
+#                 logging.error(f"Failed to process page {page_num + 1} in {pdf_path}. Error: {e}", exc_info=True)
+#                 continue # Continue to the next page
+
+#         document.close()
+#         return all_pages_data
+#     except Exception as e:
+#         logging.error(f"Failed to open or read PDF {pdf_path}. Error: {e}", exc_info=True)
+#         return []
