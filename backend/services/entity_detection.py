@@ -22,34 +22,34 @@ logger = logging.getLogger(__name__)
 # This model is used for advanced natural language processing tasks, specifically
 # for Named Entity Recognition (NER) and for semantic analysis in the validation step.
  # **[COPIED AS IS]** This was in your original redaction_core.py. It should ideally only be in main.py. Will address this later in main.py.
-try:
-    nlp = spacy.load("en_core_web_lg")
-    logger.info("✅ spaCy model 'en_core_web_lg' loaded successfully.") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-except Exception as e:
-    logger.error(f"❌ Error loading spaCy model: {e}") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-    logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-    nlp = None
+# try:
+#     nlp = spacy.load("en_core_web_lg")
+#     logger.info("✅ spaCy model 'en_core_web_lg' loaded successfully.") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+# except Exception as e:
+#     logger.error(f"❌ Error loading spaCy model: {e}") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+#     logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+#     nlp = None
 
 # ==============================================================================
 # 2. SENSITIVE ENTITY DETECTION
 # ==============================================================================
 
-def identify_sensitive_entities(pages_data: List[Dict]) -> List[Dict]:
-    """
-    Detects general named entities (PERSON, ORG, etc.) using the spaCy NER model.
-    """
-    if nlp is None:
-        logger.error("spaCy model not loaded, cannot identify entities.")
-        return []
-    all_sensitive_entities = []
-    # Defines the types of entities spaCy should look for.
-    PII_LABELS = ["PERSON", "NORP", "ORG", "GPE", "LOC", "DATE", "CARDINAL", "MONEY", "TIME", "FAC"]
-    for page_data in pages_data:
-        doc = nlp(page_data['text'])
-        for ent in doc.ents:
-            if ent.label_ in PII_LABELS:
-                all_sensitive_entities.append({"text": ent.text, "label": f"SPACY_{ent.label_}", "page_num": page_data['page_num'], "start_char": ent.start_char, "end_char": ent.end_char, "is_ocr_page": page_data['is_ocr_page'], "ocr_word_details": page_data.get('ocr_word_details', [])})
-    return all_sensitive_entities
+# def identify_sensitive_entities(pages_data: List[Dict]) -> List[Dict]:
+#     """
+#     Detects general named entities (PERSON, ORG, etc.) using the spaCy NER model.
+#     """
+#     if nlp is None:
+#         logger.error("spaCy model not loaded, cannot identify entities.")
+#         return []
+#     all_sensitive_entities = []
+#     # Defines the types of entities spaCy should look for.
+#     PII_LABELS = ["PERSON", "NORP", "ORG", "GPE", "LOC", "DATE", "CARDINAL", "MONEY", "TIME", "FAC"]
+#     for page_data in pages_data:
+#         doc = nlp(page_data['text'])
+#         for ent in doc.ents:
+#             if ent.label_ in PII_LABELS:
+#                 all_sensitive_entities.append({"text": ent.text, "label": f"SPACY_{ent.label_}", "page_num": page_data['page_num'], "start_char": ent.start_char, "end_char": ent.end_char, "is_ocr_page": page_data['is_ocr_page'], "ocr_word_details": page_data.get('ocr_word_details', [])})
+#     return all_sensitive_entities
 
 
 def identify_sensitive_entities_regex(text: str, page_num: int, is_ocr_page: bool, ocr_word_details: List = None, allowed_types: Optional[List[str]] = None) -> List[Dict]:

@@ -34,7 +34,7 @@ RUN pip install --upgrade pip && \
     pip install aiofiles==23.2.1
 
 # Download spaCy model
-RUN python -m spacy download en_core_web_sm
+#RUN python -m spacy download en_core_web_sm
 
 # Copy all application code
 COPY . .
