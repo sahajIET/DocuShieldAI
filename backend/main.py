@@ -17,8 +17,7 @@ from services.validation import post_process_and_validate_entities # PyMuPDF
 from services.pdf_processing import extract_text_from_pdf_with_ocr
 from services.entity_detection import (
     identify_entities_with_presidio,
-    identify_sensitive_entities_regex,
-    identify_sensitive_entities, # spaCy function
+    identify_sensitive_entities_regex,# spaCy function
     nlp,
     
 )
