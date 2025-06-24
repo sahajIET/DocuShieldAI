@@ -1,8 +1,9 @@
-FROM python:3.10
+FROM python:3.10-slim-buster
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+ENV PYTHONPATH /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
@@ -33,7 +34,7 @@ RUN pip install --upgrade pip && \
     pip install aiofiles==23.2.1
 
 # Download spaCy model
-RUN python -m spacy download en_core_web_lg
+RUN python -m spacy download en_core_web_sm
 
 # Copy all application code
 COPY . .
@@ -45,4 +46,4 @@ COPY . .
 EXPOSE 8000
 
 # Now uvicorn can find main.py directly since we're in /app/backend/
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
