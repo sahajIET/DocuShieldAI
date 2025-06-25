@@ -49,27 +49,52 @@ export const callGeminiAPI = async (prompt) => {
     }
 };
 
-export const fetchTypesService = async () => {
-  for (const url of POSSIBLE_BACKEND_URLS) {
-    try {
-      console.log(`Trying to connect to backend at: ${url}`);
-      const response = await fetch(`${url}/redaction-types`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
+// export const fetchTypesService = async () => {
+//   for (const url of POSSIBLE_BACKEND_URLS) {
+//     try {
+//       console.log(`Trying to connect to backend at: ${url}`);
+//       const response = await fetch(`${url}/redaction-types`, {
+//         method: 'GET',
+//         headers: { 'Accept': 'application/json' },
+//       });
       
-      if (response.ok) {
-        const data = await response.json();
-        const types = data.redaction_types || [];
-        console.log(`Successfully connected to backend at: ${url}`);
-        return { success: true, types, connectedUrl: url };
-      }
-    } catch (error) {
-      console.log(`Failed to connect to ${url}:`, error.message);
-      continue;
+//       if (response.ok) {
+//         const data = await response.json();
+//         const types = data.redaction_types || [];
+//         console.log(`Successfully connected to backend at: ${url}`);
+//         return { success: true, types, connectedUrl: url };
+//       }
+//     } catch (error) {
+//       console.log(`Failed to connect to ${url}:`, error.message);
+//       continue;
+//     }
+//   }
+//   return { success: false, triedUrls: POSSIBLE_BACKEND_URLS };
+// };
+export const fetchTypesService = async () => {
+  // This function now uses the single, correct backend URL.
+  try {
+    console.log(`Trying to connect to backend at: ${POSSIBLE_BACKEND_URLS}`);
+    const response = await fetch(`${POSSIBLE_BACKEND_URLS}/redaction-types`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      const types = data.redaction_types || [];
+      console.log(`Successfully connected to backend at: ${POSSIBLE_BACKEND_URLS}`);
+      return { success: true, types, connectedUrl: POSSIBLE_BACKEND_URLS };
+    } else {
+        // Handle non-OK responses from the server
+        console.error(`Backend responded with status: ${response.status}`);
+        return { success: false, error: `Server error (status: ${response.status})` };
     }
+  } catch (error) {
+    console.error(`Failed to connect to ${POSSIBLE_BACKEND_URLS}:`, error.message);
+    // This will catch network errors like ERR_CONNECTION_REFUSED
+    return { success: false, error: error.message };
   }
-  return { success: false, triedUrls: POSSIBLE_BACKEND_URLS };
 };
 
 export const uploadAndRedactFile = async (file, selectedRedactionTypes, backendUrl) => {
