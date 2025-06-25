@@ -11,11 +11,11 @@ import logging
 import sys
 import pytesseract
 import fitz
-from backend.services.pdf_redaction import redact_sensitive_info
-from backend.services.validation import post_process_and_validate_entities # PyMuPDF
+from services.pdf_redaction import redact_sensitive_info
+from services.validation import post_process_and_validate_entities # PyMuPDF
 # Import modularized core redaction logic from the new services package
-from backend.services.pdf_processing import extract_text_from_pdf_with_ocr
-from backend.services.entity_detection import (
+from services.pdf_processing import extract_text_from_pdf_with_ocr
+from services.entity_detection import (
     identify_entities_with_presidio,
     identify_sensitive_entities_regex,# spaCy function
     nlp,
