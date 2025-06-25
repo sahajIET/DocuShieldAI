@@ -8,8 +8,8 @@ RUN npm ci --include=dev --legacy-peer-deps
 
 COPY . .
 
-ARG REACT_APP_BACKEND_URL=http://localhost:8000
-ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+ARG VITE_BACKEND_URL=http://localhost:8000
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 RUN npm run build
 
