@@ -19,7 +19,7 @@ from services.entity_detection import (
     identify_entities_with_presidio,
     identify_sensitive_entities_regex,# spaCy function
     nlp,
-    
+    analyzer
 )
 # --- Logging Configuration ---
 # Configure logging for the entire application, reading level from environment variable
@@ -86,13 +86,13 @@ else:
 
 # --- Presidio Analyzer Initialization ---
 # Initialize Presidio Analyzer Engine once when the app starts
-try:
-    from presidio_analyzer import AnalyzerEngine
-    analyzer = AnalyzerEngine()
-    logging.info("Presidio AnalyzerEngine initialized successfully.")
-except ImportError:
-    logging.error("Presidio Analyzer could not be imported. Please install it: pip install presidio-analyzer")
-    analyzer = None
+# try:
+#     from presidio_analyzer import AnalyzerEngine
+#     analyzer = AnalyzerEngine()
+#     logging.info("Presidio AnalyzerEngine initialized successfully.")
+# except ImportError:
+#     logging.error("Presidio Analyzer could not be imported. Please install it: pip install presidio-analyzer")
+#     analyzer = None
 
 # --- Helper Functions ---
 
