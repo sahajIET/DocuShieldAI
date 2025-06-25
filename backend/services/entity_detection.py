@@ -24,31 +24,34 @@ logger = logging.getLogger(__name__)
 # for Named Entity Recognition (NER) and for semantic analysis in the validation step.
  # **[COPIED AS IS]** This was in your original redaction_core.py. It should ideally only be in main.py. Will address this later in main.py.
 try:
+    # 1. Define the NLP engine configuration for Presidio.
+    #    This explicitly tells Presidio to use the small spaCy model we installed.
+    nlp_config = {
+        # CRITICAL FIX: The key is 'nlp_engine_name', not 'nlp_engine'.
+        "nlp_engine_name": "spacy",
+        "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]
+    }
+
+    # 2. Create the NLP engine provider with the explicit configuration.
+    provider = NlpEngineProvider(nlp_configuration=nlp_config)
+    nlp_engine = provider.create_engine()
+    
+    # Also load the spaCy model directly for any other potential uses.
     nlp = spacy.load("en_core_web_sm")
-    logger.info("✅ spaCy model 'en_core_web_lg' loaded successfully.") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+
+    # 3. Create the AnalyzerEngine using the correctly configured NLP engine.
+    analyzer = AnalyzerEngine(
+        nlp_engine=nlp_engine,
+        supported_languages=["en"]
+    )
+    
+    logger.info("✅ Presidio Analyzer and spaCy model 'en_core_web_sm' loaded successfully.")
+
 except Exception as e:
-    logger.error(f"❌ Error loading spaCy model: {e}") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
-    logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
+    logger.error(f"❌ A critical error occurred during NLP engine initialization: {e}")
+    logger.error("The application may not be able to redact all entity types. Please check logs.")
     nlp = None
-
-
-# 1. Create a configuration for the NLP engine that explicitly defines the language model.
-provider_config = {
-    "nlp_engine": "spacy",
-    "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]
-}
-
-# 2. Create the NLP engine provider with the explicit configuration.
-provider = NlpEngineProvider(nlp_configuration=provider_config)
-nlp_engine = provider.create_engine()
-
-# 3. Create the AnalyzerEngine using the correctly configured NLP engine.
-analyzer = AnalyzerEngine(
-    nlp_engine=nlp_engine,
-    supported_languages=["en"]
-)
-
-logging.info("Presidio AnalyzerEngine initialized successfully with 'en_core_web_sm'.")
+    analyzer = None
 # nlp_engine = SpacyNlpEngine({"en": "en_core_web_sm"}) 
 
 # Initialize Presidio Analyzer with the configured NLP engine
