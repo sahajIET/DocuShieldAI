@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional
 
 import spacy
 from presidio_analyzer import AnalyzerEngine
-from presidio_analyzer.nlp_engine import SpacyNlpEngine
+from presidio_analyzer.nlp_engine import NlpEngineProvider
  # **[COPIED AS IS]** This was in your original redaction_core.py. It should ideally only be in main.py. Will address this later in main.py.
 
 # **[ADDED]** This line initializes a logger specifically for this module.
@@ -31,12 +31,30 @@ except Exception as e:
     logger.error("👉 Please ensure you have run 'python -m spacy download en_core_web_lg'") # **[COPIED AS IS]** This uses print, not logger. Will address this later.
     nlp = None
 
-nlp_engine = SpacyNlpEngine({"en": "en_core_web_sm"}) 
+
+# 1. Create a configuration for the NLP engine that explicitly defines the language model.
+provider_config = {
+    "nlp_engine": "spacy",
+    "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]
+}
+
+# 2. Create the NLP engine provider with the explicit configuration.
+provider = NlpEngineProvider(nlp_configuration=provider_config)
+nlp_engine = provider.create_engine()
+
+# 3. Create the AnalyzerEngine using the correctly configured NLP engine.
+analyzer = AnalyzerEngine(
+    nlp_engine=nlp_engine,
+    supported_languages=["en"]
+)
+
+logging.info("Presidio AnalyzerEngine initialized successfully with 'en_core_web_sm'.")
+# nlp_engine = SpacyNlpEngine({"en": "en_core_web_sm"}) 
 
 # Initialize Presidio Analyzer with the configured NLP engine
 # This `analyzer` instance will now correctly use `en_core_web_sm`
-analyzer = AnalyzerEngine(nlp_engine=nlp_engine)
-logger.info("Initialized Presidio Analyzer with en_core_web_sm.")
+# analyzer = AnalyzerEngine(nlp_engine=nlp_engine)
+# logger.info("Initialized Presidio Analyzer with en_core_web_sm.")
 # ==============================================================================
 # 2. SENSITIVE ENTITY DETECTION
 # ==============================================================================
