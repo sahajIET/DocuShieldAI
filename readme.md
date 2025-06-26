@@ -16,7 +16,7 @@ This project demonstrates expertise in building robust, scalable web services, i
   - **spaCy Named Entity Recognition (NER)**: General entity recognition (persons, organizations, geopolitical entities)
   - **Custom Regex Patterns**: Highly specific pattern-based data (Aadhaar IDs, PAN IDs, custom IDs)
 - **Granular Redaction Control**: Fine-grained control over redaction types with selective entity filtering
-- **Automated Redaction**: Permanent black redaction boxes over identified sensitive areas
+- **Automated Redaction**: Permanent black redaction boxes over identified sensitive areas at pixel level (not layered on top), ensuring complete data removal that cannot be recovered through various extraction methods
 - **OCR Integration**: Processes scanned or image-based PDFs using Tesseract OCR
 - **AI-Powered Suggestions**: (Future/Planned) Gemini API integration for intelligent redaction recommendations
 - **Responsive UI**: Clean, intuitive interface built with React and Tailwind CSS
@@ -45,7 +45,7 @@ DocuShield AI follows a microservices architecture with distinct frontend and ba
 3. **Text Extraction**: PyMuPDF extracts text; OCR processes image-based PDFs
 4. **Entity Detection**: Multi-strategy analysis using Presidio, spaCy, and custom regex
 5. **Validation & Consolidation**: Resolves overlapping detections for accurate redaction
-6. **Redaction**: Applies black rectangles over sensitive areas
+6. **Redaction**: Applies black rectangles over sensitive areas at the Pixel level
 7. **Download**: Returns redacted PDF to frontend
 
 ## 🚀 Technology Stack
@@ -98,7 +98,7 @@ These optimizations demonstrate practical problem-solving for real-world deploym
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/docushield-ai.git
+   git clone https://github.com/sahajIET/DocuShieldAI.git
    cd docushield-ai
    ```
 
@@ -128,25 +128,17 @@ docker-compose up --build
 ```
 
 - Backend: http://localhost:8000
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:5173 / http://localhost:3000
 
 ## 📈 Future Enhancements
 
 - **User Authentication & Authorization**: Login/signup with role-based access control
-- **Redaction History & Management**: Document storage with user dashboard
-- **Advanced AI Customization**: Custom entity types and model fine-tuning  
 - **Asynchronous Processing**: Message queue integration for large documents
-- **Scalable Storage**: Cloud object storage integration
-- **Enhanced UI/UX**: Drag-and-drop, improved progress indicators
-- **Comprehensive Testing**: Unit, integration, and end-to-end test suites
+- **Enhanced UI/UX**: Drag-and-drop
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Links
 
