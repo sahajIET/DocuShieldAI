@@ -69,7 +69,7 @@ DocuShield AI follows a microservices architecture with distinct frontend and ba
 
 ### Deployment
 - **Docker**: Containerization for both services
-- **Render.com / Google Cloud Run**: PaaS deployment platforms
+- **Render.com**: PaaS deployment platforms
 - **Environment Consistency**: Portable, scalable container deployment
 
 ## 🧠 Deployment Challenges & Solutions
