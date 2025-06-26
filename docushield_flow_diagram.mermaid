@@ -1,0 +1,49 @@
+flowchart TD
+    A[👤 User Uploads PDF] --> B{📋 PDF Pre-check}
+    B -->|✅ Valid PDF| C[📄 Text Extraction]
+    B -->|❌ Invalid/Protected| D[🚫 Error: Invalid PDF]
+    
+    C --> E{📝 PDF Type Check}
+    E -->|Native PDF| F[📖 PyMuPDF Text Extraction]
+    E -->|Scanned/Image PDF| G[🖼️ OpenCV Image Processing]
+    
+    G --> H[👁️ PyTesseract OCR]
+    H --> I[📝 Extracted Text]
+    F --> I
+    
+    I --> J[🧠 Entity Detection Pipeline]
+    
+    J --> K[🔍 Presidio Analyzer<br/>Context-aware PII Detection]
+    J --> L[🏷️ spaCy NER<br/>Named Entity Recognition]
+    J --> M[🔤 Custom Regex Patterns<br/>Pattern-based Detection]
+    
+    K --> N[📊 Entity Results 1]
+    L --> O[📊 Entity Results 2]
+    M --> P[📊 Entity Results 3]
+    
+    N --> Q[🔧 Validation & Consolidation<br/>Resolve Overlapping Detections]
+    O --> Q
+    P --> Q
+    
+    Q --> R[✅ Validated Entity List]
+    R --> S[⚙️ User Selects Redaction Types]
+    S --> T[🖤 Pixel-level Redaction<br/>PyMuPDF Black Rectangles]
+    
+    T --> U[📋 Generate Redaction Summary]
+    U --> V[📦 Package Results]
+    V --> W[⬇️ Download Redacted PDF]
+    
+    %% Styling
+    classDef userAction fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef processing fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef aiProcess fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef decision fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef output fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    
+    class A,S,W userAction
+    class C,F,G,H,I,T,U,V processing
+    class J,K,L,M,N,O,P,Q,R aiProcess
+    class B,E decision
+    class W output
+    class D error
